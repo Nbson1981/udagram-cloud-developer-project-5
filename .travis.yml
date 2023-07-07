@@ -6,7 +6,8 @@ before_install:
 - npm i serverless -g
 - serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_KEY}
 - ls
-- chmod o+rx ./backend/deploy.sh
+- chmod +x ./backend/deploy.sh
+
 stages:
 - name: Deploy Dev
   if: branch = dev
