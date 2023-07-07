@@ -5,6 +5,7 @@ env:
 before_install:
 - npm i serverless -g
 - serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_KEY}
+- ls
 
 stages:
 - name: Deploy Dev
@@ -15,6 +16,6 @@ stages:
 jobs: 
   include:
     - stage:  Deploy Dev
-      script: ./Backend/deploy.sh
+      script: ./backend/deploy.sh
     - stage:  Deploy Prod
-      script: ./Backend/deploy.sh
+      script: ./backend/deploy.sh
