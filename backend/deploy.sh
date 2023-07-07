@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ev
 
-cd "$PWD"/Backend
+cd "$PWD"/backend
 
 echo "Install Dependencies"
 npm ci
