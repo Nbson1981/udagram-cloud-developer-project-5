@@ -1,27 +1,22 @@
 # Serverless TODO
 
-<p align='center'>
-
   [![Build Status](https://app.travis-ci.com/Nbson1981/udagram-cloud-developer-project-5.svg?branch=main)](https://app.travis-ci.com/Nbson1981/udagram-cloud-developer-project-5)
 
-</p>
-
-To implement this project, you need to implement a simple TODO application using AWS Lambda and Serverless framework. Search for all comments starting with the `TODO:` in the code to find the placeholders that you need to implement.
 
 # Functionality of the application
 
-This application will allow creating/removing/updating/fetching TODO items. Each TODO item can optionally have an attachment image. Each user only has access to TODO items that he/she has created.
+This application will allow creating/removing/updating/fetching members. Each member item can optionally have an profile image. Each team leader only has access to members that he/she has owned.
 
 # TODO items
 
-The application should store TODO items, and each TODO item contains the following fields:
+The application should store the team members, and each member contains the following fields:
 
-* `todoId` (string) - a unique id for an item
+* `memberId` (string) - a unique id for an member
 * `createdAt` (string) - date and time when an item was created
 * `name` (string) - name of a TODO item (e.g. "Change a light bulb")
-* `dueDate` (string) - date and time by which an item should be completed
-* `done` (boolean) - true if an item was completed, false otherwise
-* `attachmentUrl` (string) (optional) - a URL pointing to an image attached to a TODO item
+* `joinedDate` (string) - date and time that member join in the team
+* `active` (boolean) - true if an member is active, false otherwise
+* `imageUrl` (string) (optional) - a URL pointing to an profile image 
 
 You might also store an id of a user who created a TODO item.
 
@@ -52,7 +47,7 @@ To implement this project, you need to implement the following functions and con
 
 * `Auth` - this function should implement a custom authorizer for API Gateway that should be added to all other functions.
 
-* `GetTodos` - should return all TODOs for a current user. A user id can be extracted from a JWT token that is sent by the frontend
+* `GetMembers` - should return all members for a current user. A user id can be extracted from a JWT token that is sent by the frontend
 
 It should return data that looks like this:
 
@@ -60,63 +55,63 @@ It should return data that looks like this:
 {
   "items": [
     {
-      "todoId": "123",
+      "memberId": "123",
       "createdAt": "2019-07-27T20:01:45.424Z",
-      "name": "Buy milk",
-      "dueDate": "2019-07-29T20:01:45.424Z",
-      "done": false,
-      "attachmentUrl": "http://example.com/image.png"
+      "name": "Nguyen Van A",
+      "joinedDate": "2019-07-29T20:01:45.424Z",
+      "active": false,
+      "imageUrl": "http://example.com/image.png"
     },
     {
-      "todoId": "456",
+      "memberId": "456",
       "createdAt": "2019-07-27T20:01:45.424Z",
-      "name": "Send a letter",
-      "dueDate": "2019-07-29T20:01:45.424Z",
-      "done": true,
-      "attachmentUrl": "http://example.com/image.png"
+      "name": "Lai Van B",
+      "joinedDate": "2019-07-29T20:01:45.424Z",
+      "active": true,
+      "imageUrl": "http://example.com/image.png"
     },
   ]
 }
 ```
 
-* `CreateTodo` - should create a new TODO for a current user. A shape of data send by a client application to this function can be found in the `CreateTodoRequest.ts` file
+* `CreateMember` - should create a new member for a current user. A shape of data send by a client application to this function can be found in the `CreateMemberRequest.ts` file
 
-It receives a new TODO item to be created in JSON format that looks like this:
+It receives a new member to be created in JSON format that looks like this:
 
 ```json
 {
   "createdAt": "2019-07-27T20:01:45.424Z",
   "name": "Buy milk",
-  "dueDate": "2019-07-29T20:01:45.424Z",
-  "done": false,
-  "attachmentUrl": "http://example.com/image.png"
+  "joinedDate": "2019-07-29T20:01:45.424Z",
+  "active": false,
+  "imageUrl": "http://example.com/image.png"
 }
 ```
 
-It should return a new TODO item that looks like this:
+It should return a member that looks like this:
 
 ```json
 {
   "item": {
-    "todoId": "123",
+    "memberId": "123",
     "createdAt": "2019-07-27T20:01:45.424Z",
     "name": "Buy milk",
-    "dueDate": "2019-07-29T20:01:45.424Z",
-    "done": false,
-    "attachmentUrl": "http://example.com/image.png"
+    "joinedDate": "2019-07-29T20:01:45.424Z",
+    "active": false,
+    "imageUrl": "http://example.com/image.png"
   }
 }
 ```
 
-* `UpdateTodo` - should update a TODO item created by a current user. A shape of data send by a client application to this function can be found in the `UpdateTodoRequest.ts` file
+* `UpdateMember` - should update a member created by a current user. A shape of data send by a client application to this function can be found in the `UpdateMemberRequest.ts` file
 
 It receives an object that contains three fields that can be updated in a TODO item:
 
 ```json
 {
   "name": "Buy bread",
-  "dueDate": "2019-07-29T20:01:45.424Z",
-  "done": true
+  "joinedDate": "2019-07-29T20:01:45.424Z",
+  "active": true
 }
 ```
 
@@ -124,11 +119,11 @@ The id of an item that should be updated is passed as a URL parameter.
 
 It should return an empty body.
 
-* `DeleteTodo` - should delete a TODO item created by a current user. Expects an id of a TODO item to remove.
+* `DeleteMember` - should delete a member created by a current user. Expects an id of a member to remove.
 
 It should return an empty body.
 
-* `GenerateUploadUrl` - returns a pre-signed URL that can be used to upload an attachment file for a TODO item.
+* `GenerateUploadUrl` - returns a pre-signed URL that can be used to upload an image file for a member.
 
 It should return a JSON object that looks like this:
 
