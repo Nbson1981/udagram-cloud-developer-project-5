@@ -192,8 +192,8 @@ export class Members extends React.PureComponent<MembersProps, MembersState> {
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {member.imageUrl && (
-                <Image src={member.imageUrl} size="small" wrapped />
+              {member.attachmentUrl && (
+                <Image src={member.attachmentUrl} size="small" wrapped />
               )}
               <Grid.Column width={16}>
                 <Divider />
@@ -207,7 +207,7 @@ export class Members extends React.PureComponent<MembersProps, MembersState> {
 
   calculateDueDate(): string {
     const date = new Date()
-    date.setDate(date.getDate() + 7)
+    date.setDate(date.getDate())
 
     return dateFormat(date, 'yyyy-mm-dd') as string
   }

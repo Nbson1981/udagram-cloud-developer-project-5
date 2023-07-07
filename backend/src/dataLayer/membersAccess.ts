@@ -99,7 +99,7 @@ export class MembersAccess {
         return memberId as string
     }
 
-    async updateImageUrl(memberId: string, userId: string, imageUrl: string): Promise<void> {
+    async updateAttachmentUrl(memberId: string, userId: string, attachmentUrl: string): Promise<void> {
         await this.docClient.update({
           TableName: this.membersTable,
           Key: {
@@ -108,7 +108,7 @@ export class MembersAccess {
           },
           UpdateExpression: 'set attachmentUrl = :attachmentUrl',
           ExpressionAttributeValues:{
-              ':attachmentUrl': imageUrl
+              ':attachmentUrl': attachmentUrl
           }
         }).promise()
       }

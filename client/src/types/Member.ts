@@ -4,5 +4,5 @@ export interface Member {
   name: string
   joinedDate: string
   active: boolean
-  imageUrl?: string
+  attachmentUrl?: string
 }

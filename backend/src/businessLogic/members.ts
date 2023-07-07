@@ -33,8 +33,8 @@ export async function createMember(
         userId,
         memberId,
         createdAt,
-        active: false,
-        imageUrl: '',
+        active: true,
+        attachmentUrl: '',
         ...newMember
     }
 return await membersAcess.createMemberItem(newItem)
@@ -65,7 +65,7 @@ export async function createImagePresignedUrl(
     userId: string    
     ): Promise<string> {
     logger.info('Calling create image function by user', userId, memberId)
-    const s3AttachmentUrl = imageUtils.getImageUrl(memberId)
-    await membersAcess.updateImageUrl(memberId, userId, s3AttachmentUrl)
+    const s3AttachmentUrl = imageUtils.getAttachmentUrl(memberId)
+    await membersAcess.updateAttachmentUrl(memberId, userId, s3AttachmentUrl)
     return imageUtils.getUploadUrl(memberId)    
 }

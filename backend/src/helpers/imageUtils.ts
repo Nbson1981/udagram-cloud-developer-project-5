@@ -13,7 +13,7 @@ export class ImageUtils{
         private readonly bucketName = s3BucketName,
     ) {}
 
-    getImageUrl(memberId: string) {
+    getAttachmentUrl(memberId: string) {
         return `https://${this.bucketName}.s3.amazonaws.com/${memberId}`
     }
 

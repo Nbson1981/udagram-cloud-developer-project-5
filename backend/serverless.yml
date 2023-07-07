@@ -24,7 +24,7 @@ provider:
   environment:
     MEMBERS_TABLE: Serverless-member-management-app-${self:provider.stage}
     MEMBERS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: udacity-serverless-member-management-images-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: udacity-serverless-member-management-images-${self:provider.stage}-nbson
     SIGNED_URL_EXPIRATION: 300
     #PROJECT_NAME: serverless-app
 

@@ -16,7 +16,7 @@ The application should store the team members, and each member contains the foll
 * `name` (string) - name of a item (e.g. "Change a light bulb")
 * `joinedDate` (string) - date and time that member join in the team
 * `active` (boolean) - true if an member is active, false otherwise
-* `imageUrl` (string) (optional) - a URL pointing to an profile image 
+* `attachmentUrl` (string) (optional) - a URL pointing to an profile image 
 
 You might also store an id of a user who created a item.
 
@@ -60,7 +60,7 @@ It should return data that looks like this:
       "name": "Nguyen Van A",
       "joinedDate": "2019-07-29T20:01:45.424Z",
       "active": false,
-      "imageUrl": "http://example.com/image.png"
+      "attachmentUrl": "http://example.com/image.png"
     },
     {
       "memberId": "456",
@@ -68,7 +68,7 @@ It should return data that looks like this:
       "name": "Lai Van B",
       "joinedDate": "2019-07-29T20:01:45.424Z",
       "active": true,
-      "imageUrl": "http://example.com/image.png"
+      "attachmentUrl": "http://example.com/image.png"
     },
   ]
 }
@@ -84,7 +84,7 @@ It receives a new member to be created in JSON format that looks like this:
   "name": "Buy milk",
   "joinedDate": "2019-07-29T20:01:45.424Z",
   "active": false,
-  "imageUrl": "http://example.com/image.png"
+  "attachmentUrl": "http://example.com/image.png"
 }
 ```
 
@@ -98,7 +98,7 @@ It should return a member that looks like this:
     "name": "Buy milk",
     "joinedDate": "2019-07-29T20:01:45.424Z",
     "active": false,
-    "imageUrl": "http://example.com/image.png"
+    "attachmentUrl": "http://example.com/image.png"
   }
 }
 ```
