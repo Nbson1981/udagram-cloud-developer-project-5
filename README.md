@@ -1,4 +1,4 @@
-# Serverless TODO
+# Serverless App
 
   [![Build Status](https://app.travis-ci.com/Nbson1981/udagram-cloud-developer-project-5.svg?branch=main)](https://app.travis-ci.com/Nbson1981/udagram-cloud-developer-project-5)
 
@@ -13,12 +13,12 @@ The application should store the team members, and each member contains the foll
 
 * `memberId` (string) - a unique id for an member
 * `createdAt` (string) - date and time when an item was created
-* `name` (string) - name of a TODO item (e.g. "Change a light bulb")
+* `name` (string) - name of a item (e.g. "Change a light bulb")
 * `joinedDate` (string) - date and time that member join in the team
 * `active` (boolean) - true if an member is active, false otherwise
 * `imageUrl` (string) (optional) - a URL pointing to an profile image 
 
-You might also store an id of a user who created a TODO item.
+You might also store an id of a user who created a item.
 
 ## Prerequisites
 
@@ -105,7 +105,7 @@ It should return a member that looks like this:
 
 * `UpdateMember` - should update a member created by a current user. A shape of data send by a client application to this function can be found in the `UpdateMemberRequest.ts` file
 
-It receives an object that contains three fields that can be updated in a TODO item:
+It receives an object that contains three fields that can be updated in a item:
 
 ```json
 {
@@ -192,11 +192,11 @@ Once you have finished developing your application, please set `apiId` and Auth0
 
 # Suggestions
 
-To store TODO items, you might want to use a DynamoDB table with local secondary index(es). A create a local secondary index you need to create a DynamoDB resource like this:
+To store members, you might want to use a DynamoDB table with local secondary index(es). A create a local secondary index you need to create a DynamoDB resource like this:
 
 ```yml
 
-TodosTable:
+MembersTable:
   Type: AWS::DynamoDB::Table
   Properties:
     AttributeDefinitions:
@@ -212,7 +212,7 @@ TodosTable:
       - AttributeName: sortKey
         KeyType: RANGE
     BillingMode: PAY_PER_REQUEST
-    TableName: ${self:provider.environment.TODOS_TABLE}
+    TableName: ${self:provider.environment.MEMBERS_TABLE}
     LocalSecondaryIndexes:
       - IndexName: ${self:provider.environment.INDEX_NAME}
         KeySchema:
@@ -262,7 +262,7 @@ npm install
 npm run start
 ```
 
-This should start a development server with the React application that will interact with the serverless TODO application.
+This should start a development server with the React application that will interact with the serverless application.
 
 # Postman collection
 

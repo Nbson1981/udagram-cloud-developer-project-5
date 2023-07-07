@@ -1,8 +1,6 @@
 org: nguyenbason
-app: serverless-todo-app
-# TODO: Change the name of the org 
-service: serverless-todo-app-1
-#variablesResolutionMode: 20210326
+app: serverless-member-management-app
+service: serverless-member-management-app
 
 plugins:
   - serverless-webpack
@@ -14,7 +12,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs18.x
-  lambdaHashingVersion: '20201221'
+  lambdaHashingVersion: '20230707'
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
   tracing: 
@@ -24,12 +22,11 @@ provider:
   # Use these variables in the functions and resouorces section below. For example, 
   # ${self:provider.environment.ATTACHMENT_S3_BUCKET}
   environment:
-    TODOS_TABLE: Serverless-todo-app-${self:provider.stage}
-    TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: udacity-serverless-c4-todo-images-${self:provider.stage}-nguyenbason
+    MEMBERS_TABLE: Serverless-member-management-app-${self:provider.stage}
+    MEMBERS_CREATED_AT_INDEX: CreatedAtIndex
+    ATTACHMENT_S3_BUCKET: udacity-serverless-member-management-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     #PROJECT_NAME: serverless-app
-    #INDEX_NAME: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
 
 custom:
   
@@ -37,15 +34,15 @@ custom:
     api:
       info:
         version: v1.0.0
-        title: TODOs API
-        description: Udacity Serverles API for TODO
+        title: MEMBERS MANAGEMENT API
+        description: Udacity Serverles API 
     models:
-      - name: TodoCreateRequest
+      - name: MemberCreateRequest
         contentType: application/json
-        schema: ${file(models/create-todo-model.json)}
-      - name: TodoUpdateRequest
+        schema: ${file(models/create-member-model.json)}
+      - name: MemberUpdateRequest
         contentType: application/json
-        schema: ${file(models/update-todo-model.json)}
+        schema: ${file(models/update-member-model.json)}
 
   logs:
     # Enable API Gateway logs
@@ -73,26 +70,20 @@ functions:
         Resource:
           - "*"
 
-  # TODO: Configure this function - 
   # Provide iamRoleStatements property for performing Actions on DynamoDB
-  GetTodos:
-    handler: src/lambda/http/getTodos.handler
+  GetMembers:
+    handler: src/lambda/http/getMembers.handler
     events:
       - http:
           method: get
-          path: todos
+          path: members
           cors: true
           authorizer: Auth
-    #iamRoleStatementName: ${self:provider.environment.PROJECT_NAME}-get-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:Query
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-      # - Effect: Allow
-      #   Action:
-      #     - dynamodb:Query
-      #   Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_CREATED_AT_INDEX}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.MEMBERS_TABLE}
       - Effect: Allow
         Action:
           - xray:PutTraceSegments
@@ -100,30 +91,28 @@ functions:
         Resource:
           - '*'
 
-  # TODO: Configure this function - 
   # Provide iamRoleStatements property. Decide the Actions and AWS Resource. 
   # To refer to an AWS resource defined in the "Resources" section, you can use "Resource: !GetAtt <resource-name>.Arn"
   # To validate incoming HTTP requests, we have provided the request schemas in function definition below. 
-  CreateTodo:
-    handler: src/lambda/http/createTodo.handler
+  CreateMember:
+    handler: src/lambda/http/createMember.handler
     events:
       - http:
           method: post
           reqValidatorName: RequestBodyValidator
-          path: todos
+          path: members
           cors: true
           authorizer: Auth
           documentation:
-            summary: Create a new TODO
-            description: Create a new TODO
+            summary: Create a new member
+            description: Create a new member
             requestModels:
-              'application/json': TodoCreateRequest
-    #iamRoleStatementName: ${self:provider.environment.PROJECT_NAME}-create-todo-role-${self:provider.stage}
+              'application/json': MemberCreateRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.MEMBERS_TABLE}
       - Effect: Allow
         Action:
           - xray:PutTraceSegments
@@ -131,28 +120,26 @@ functions:
         Resource:
           - '*'
 
-  # TODO: Configure this function
   # Provide property for setting up CORS, Authorizer, iamRoleStatements, and request schemas
-  UpdateTodo:
-    handler: src/lambda/http/updateTodo.handler
+  UpdateMember:
+    handler: src/lambda/http/updateMember.handler
     events:
       - http:
           method: patch
           reqValidatorName: RequestBodyValidator
-          path: todos/{todoId}
+          path: members/{memberId}
           cors: true
           authorizer: Auth
           documentation:
-            summary: Update a new TODO
-            description: Update a new TODO
+            summary: Update a new member
+            description: Update a new member
             requestModels:
-              'application/json': TodoUpdateRequest
-    #iamRoleStatementName: ${self:provider.environment.PROJECT_NAME}-update-todo-role-${self:provider.stage}
+              'application/json': MemberUpdateRequest
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem 
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.MEMBERS_TABLE}
       - Effect: Allow
         Action:
           - xray:PutTraceSegments
@@ -162,20 +149,19 @@ functions:
 
   # TODO: Configure this function
   # Provide property for setting up CORS, Authorizer, iamRoleStatements
-  DeleteTodo:
-    handler: src/lambda/http/deleteTodo.handler
+  DeleteMember:
+    handler: src/lambda/http/deleteMember.handler
     events:
       - http:
           method: delete
-          path: todos/{todoId}
+          path: members/{memberId}
           cors: true
           authorizer: Auth
-    #iamRoleStatementName: ${self:provider.environment.PROJECT_NAME}-delete-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:DeleteItem 
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.MEMBERS_TABLE}
       - Effect: Allow
         Action:
           - xray:PutTraceSegments
@@ -190,7 +176,7 @@ functions:
     events:
       - http:
           method: post
-          path: todos/{todoId}/attachment
+          path: members/{memberId}/attachment
           cors: true
           authorizer: Auth
     #iamRoleStatementName: ${self:provider.environment.PROJECT_NAME}-generate-s3-upload-url-role-${self:provider.stage}
@@ -202,7 +188,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.MEMBERS_TABLE}
       - Effect: Allow
         Action:
           - xray:PutTraceSegments
@@ -236,29 +222,29 @@ resources:
         
     
     # TODO: Create a DynamoDB table with local secondary index and a composite key
-    TodosTable:
+    MembersTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
           - AttributeName: userId
             AttributeType: S
-          - AttributeName: todoId
+          - AttributeName: memberId
             AttributeType: S
           # - AttributeName: createdAt
           #   AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
-          - AttributeName: todoId
+          - AttributeName: memberId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.TODOS_TABLE}
+        TableName: ${self:provider.environment.MEMBERS_TABLE}
         LocalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.TODOS_CREATED_AT_INDEX}
+          - IndexName: ${self:provider.environment.MEMBERS_CREATED_AT_INDEX}
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH
-              - AttributeName: todoId
+              - AttributeName: memberId
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL

@@ -1,20 +1,22 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "create-todo",
+  "title": "update-member",
   "type": "object",
   "properties": {
     "name": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 20
-    },
-    "dueDate": {
       "type": "string"
+    },
+    "joinedDate": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean"
     }
   },
   "required": [
     "name",
-    "dueDate"
+    "joinedDate",
+    "active"
   ],
   "additionalProperties": false
 }
